@@ -13,7 +13,6 @@ use App\Http\Controllers\Backend\DepartmentController;
 use App\Http\Controllers\Backend\DoctorController;
 use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\HomeController;
-use App\Models\Department;
 
 /*
 |--------------------------------------------------------------------------
