@@ -110,6 +110,17 @@ class RolePermissionSeeder extends Seeder
                     'department.update',
                 ]
             ],
+            [
+                'group_name' => 'booking',
+                'permissions' => [
+                    // booking Permissions
+                    'booking.create',
+                    'booking.view',
+                    'booking.edit',
+                    'booking.delete',
+                    'booking.update',
+                ]
+            ],
         ];
 
 

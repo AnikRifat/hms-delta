@@ -94,6 +94,23 @@
                         </ul>
                     </li>
                     @endif
+                    @if ($usr->can('booking.create') || $usr->can('booking.view') ||  $usr->can('booking.edit') ||  $usr->can('booking.delete'))
+                    <li>
+                        <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-user"></i><span>
+                            booking
+                        </span></a>
+                        <ul class="collapse {{ Route::is('admin.bookings.create') || Route::is('admin.bookings.index') || Route::is('admin.bookings.edit') || Route::is('admin.bookings.show') ? 'in' : '' }}">
+
+                            @if ($usr->can('admin.view'))
+                                <li class="{{ Route::is('admin.bookings.index')  || Route::is('admin.bookings.edit') ? 'active' : '' }}"><a href="{{ route('admin.bookings.index') }}">All bookings</a></li>
+                            @endif
+
+                            @if ($usr->can('admin.create'))
+                                <li class="{{ Route::is('admin.bookings.create')  ? 'active' : '' }}"><a href="{{ route('admin.bookings.create') }}">Create booking</a></li>
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
                 </ul>
             </nav>
         </div>

@@ -45,7 +45,7 @@ Create Doctor - Admin Panel
                     <h4 class="header-title">Create New Doctor</h4>
                     @include('backend.layouts.partials.messages')
 
-                    <form action="{{ route('admin.doctors.store') }}" method="POST">
+                    <form action="{{ route('admin.doctors.store') }}" method="POST" id="doctorForm">
                         @csrf
                         <div class="form-row">
                             <div class="form-group col-md-6 col-sm-12">
@@ -81,6 +81,34 @@ Create Doctor - Admin Panel
                             </div>
                         </div>
 
+                        <h4 class="header-title mt-4">Appointment Schedule</h4>
+                        <div id="appointmentSchedules">
+                            <div class="form-row schedule-item mb-3">
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label for="day_of_week">Day of the Week</label>
+                                    <select name="day_of_week[]" class="form-control" required>
+                                        <option value="">Select Day</option>
+                                        <option value="Monday">Monday</option>
+                                        <option value="Tuesday">Tuesday</option>
+                                        <option value="Wednesday">Wednesday</option>
+                                        <option value="Thursday">Thursday</option>
+                                        <option value="Friday">Friday</option>
+                                        <option value="Saturday">Saturday</option>
+                                        <option value="Sunday">Sunday</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label for="start_time">Start Time</label>
+                                    <input type="time" class="form-control" name="start_time[]" required>
+                                </div>
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label for="end_time">End Time</label>
+                                    <input type="time" class="form-control" name="end_time[]" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" id="addSchedule" class="btn btn-secondary mt-2">Add Another Schedule</button>
+
                         <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Save Doctor</button>
                     </form>
                 </div>
@@ -90,6 +118,7 @@ Create Doctor - Admin Panel
 
     </div>
 </div>
+
 @endsection
 
 @section('scripts')
@@ -97,6 +126,36 @@ Create Doctor - Admin Panel
 <script>
     $(document).ready(function() {
         $('.select2').select2();
-    })
+
+        // Add another schedule
+        $('#addSchedule').click(function() {
+            const scheduleItem = `
+                <div class="form-row schedule-item mb-3">
+                    <div class="form-group col-md-4 col-sm-12">
+                        <label for="day_of_week">Day of the Week</label>
+                        <select name="day_of_week[]" class="form-control" required>
+                            <option value="">Select Day</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-12">
+                        <label for="start_time">Start Time</label>
+                        <input type="time" class="form-control" name="start_time[]" required>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-12">
+                        <label for="end_time">End Time</label>
+                        <input type="time" class="form-control" name="end_time[]" required>
+                    </div>
+                </div>
+            `;
+            $('#appointmentSchedules').append(scheduleItem);
+        });
+    });
 </script>
 @endsection

@@ -1,65 +1,28 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\Controller;
 use App\Models\AppointmentSchedule;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 
 class AppointmentScheduleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    public function getByDoctor(Request $request)
+{
+    $doctorId = $request->get('doctor_id');
+    $schedules = AppointmentSchedule::where('doctor_id', $doctorId)->get();
+    return response()->json($schedules);
+}
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+public function getDoctors(Request $request)
+{
+    $departmentId = $request->get('department_id');
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    $doctors = Doctor::with('appointmentSchedules')->where('department_id', $departmentId)->get();
+    return response()->json($doctors);
+}
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(AppointmentSchedule $appointmentSchedule)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(AppointmentSchedule $appointmentSchedule)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, AppointmentSchedule $appointmentSchedule)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(AppointmentSchedule $appointmentSchedule)
-    {
-        //
-    }
 }
