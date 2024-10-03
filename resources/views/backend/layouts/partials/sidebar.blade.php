@@ -66,11 +66,11 @@
                         </span></a>
                         <ul class="collapse {{ Route::is('admin.departments.create') || Route::is('admin.departments.index') || Route::is('admin.departments.edit') || Route::is('admin.departments.show') ? 'in' : '' }}">
 
-                            @if ($usr->can('admin.view'))
+                            @if ($usr->can('department.view'))
                                 <li class="{{ Route::is('admin.departments.index')  || Route::is('admin.departments.edit') ? 'active' : '' }}"><a href="{{ route('admin.departments.index') }}">All Departments</a></li>
                             @endif
 
-                            @if ($usr->can('admin.create'))
+                            @if ($usr->can('department.create'))
                                 <li class="{{ Route::is('admin.departments.create')  ? 'active' : '' }}"><a href="{{ route('admin.departments.create') }}">Create Department</a></li>
                             @endif
                         </ul>
@@ -101,11 +101,11 @@
                         </span></a>
                         <ul class="collapse {{ Route::is('admin.bookings.create') || Route::is('admin.bookings.index') || Route::is('admin.bookings.edit') || Route::is('admin.bookings.show') ? 'in' : '' }}">
 
-                            @if ($usr->can('admin.view'))
+                            @if ($usr->can('booking.view'))
                                 <li class="{{ Route::is('admin.bookings.index')  || Route::is('admin.bookings.edit') ? 'active' : '' }}"><a href="{{ route('admin.bookings.index') }}">All bookings</a></li>
                             @endif
 
-                            @if ($usr->can('admin.create'))
+                            @if ($usr->can('booking.create'))
                                 <li class="{{ Route::is('admin.bookings.create')  ? 'active' : '' }}"><a href="{{ route('admin.bookings.create') }}">Create booking</a></li>
                             @endif
                         </ul>
