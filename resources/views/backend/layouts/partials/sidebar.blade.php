@@ -84,11 +84,11 @@
                         </span></a>
                         <ul class="collapse {{ Route::is('admin.doctors.create') || Route::is('admin.doctors.index') || Route::is('admin.doctors.edit') || Route::is('admin.doctors.show') ? 'in' : '' }}">
 
-                            @if ($usr->can('admin.view'))
+                            @if ($usr->can('doctor.view'))
                                 <li class="{{ Route::is('admin.doctors.index')  || Route::is('admin.doctors.edit') ? 'active' : '' }}"><a href="{{ route('admin.doctors.index') }}">All Doctors</a></li>
                             @endif
 
-                            @if ($usr->can('admin.create'))
+                            @if ($usr->can('doctor.create'))
                                 <li class="{{ Route::is('admin.doctors.create')  ? 'active' : '' }}"><a href="{{ route('admin.doctors.create') }}">Create Doctor</a></li>
                             @endif
                         </ul>
