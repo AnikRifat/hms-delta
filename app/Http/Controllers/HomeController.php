@@ -39,7 +39,9 @@ class HomeController extends Controller
     {
 
         $booking = Booking::create($request->validated());
-
+if($booking){
+    
+}
         session()->flash('success', __('Booking has been created.'));
 
         return $this->showSuccessPage($booking['id']);
