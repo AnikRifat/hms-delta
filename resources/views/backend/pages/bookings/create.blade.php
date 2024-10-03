@@ -6,11 +6,10 @@ Booking Create - Admin Panel
 
 @section('styles')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-<style>
-    .form-check-label {
-        text-transform: capitalize;
-    }
-</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
 @endsection
 
 @section('admin-content')
@@ -47,23 +46,23 @@ Booking Create - Admin Panel
                     <form action="{{ route('admin.bookings.store') }}" method="POST">
                         @csrf
                         <div class="form-row">
-                            <div class="form-group col-md-6 col-sm-12">
-                                <label for="patient_name">Patient Name</label>
+                            <div class="form-group col-md-6 col-sm-12 mb-3">
+                                <label for="patient_name" class="form-label">Patient Name</label>
                                 <input type="text" class="form-control" id="patient_name" name="patient_name" placeholder="Enter Patient Name" required>
                             </div>
 
-                            <div class="form-group col-md-6 col-sm-12">
-                                <label for="patient_email">Patient Email</label>
+                            <div class="form-group col-md-6 col-sm-12 mb-3">
+                                <label for="patient_email" class="form-label">Patient Email</label>
                                 <input type="email" class="form-control" id="patient_email" name="patient_email" placeholder="Enter Patient Email">
                             </div>
 
-                            <div class="form-group col-md-6 col-sm-12">
-                                <label for="patient_phone">Patient Phone</label>
+                            <div class="form-group col-md-6 col-sm-12 mb-3">
+                                <label for="patient_phone" class="form-label">Patient Phone</label>
                                 <input type="text" class="form-control" id="patient_phone" name="patient_phone" placeholder="Enter Patient Phone">
                             </div>
 
-                            <div class="form-group col-md-6 col-sm-12">
-                                <label for="department_id">Select Department</label>
+                            <div class="form-group col-md-6 col-sm-12 mb-3">
+                                <label for="department_id" class="form-label">Select Department</label>
                                 <select class="form-control select2" id="department_id" name="department_id" required>
                                     <option value="">Select Department</option>
                                     @foreach ($departments as $department)
@@ -72,24 +71,23 @@ Booking Create - Admin Panel
                                 </select>
                             </div>
 
-                            <div class="form-group col-md-6 col-sm-12">
-                                <label for="doctor_id">Select Doctor</label>
+                            <div class="form-group col-md-6 col-sm-12 mb-3">
+                                <label for="doctor_id" class="form-label">Select Doctor</label>
                                 <select class="form-control select2" id="doctor_id" name="doctor_id" required disabled>
                                     <option value="">Select Doctor</option>
                                 </select>
                             </div>
 
-                            <div class="form-group col-md-6 col-sm-12">
-                                <label for="appointment_schedule_id">Appointment Schedule</label>
+                            <div class="form-group col-md-6 col-sm-12 mb-3">
+                                <label for="appointment_schedule_id" class="form-label">Appointment Schedule</label>
                                 <select class="form-control select2" id="appointment_schedule_id" name="appointment_schedule_id" required disabled>
                                     <option value="">Select Appointment Schedule</option>
-                                    <!-- Options will be dynamically loaded here based on the selected doctor -->
                                 </select>
                             </div>
 
-                            <div class="form-group col-md-6 col-sm-12">
-                                <label for="booking_date">Booking Date</label>
-                                <input type="date" class="form-control" id="booking_date" name="booking_date" required>
+                            <div class="form-group col-md-6 col-sm-12 mb-3">
+                                <label for="booking_date" class="form-label">Booking Date</label>
+                                <input type="text" class="form-control" id="booking_date" name="booking_date" placeholder="Select Booking Date" required disabled>
                             </div>
                         </div>
 
@@ -108,19 +106,19 @@ Booking Create - Admin Panel
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     $(document).ready(function() {
-        // $('.select2').select2();
 
-        // When a department is selected, load doctors
         $('#department_id').change(function() {
             var departmentId = $(this).val();
             $('#doctor_id').prop('disabled', true).empty().append('<option value="">Select Doctor</option>');
             $('#appointment_schedule_id').prop('disabled', true).empty().append('<option value="">Select Appointment Schedule</option>');
+            $('#booking_date').prop('disabled', true);
 
             if (departmentId) {
                 $.ajax({
-                    url: "{{ route('doctors.byDepartment') }}", // Adjust this route to match your setup
+                    url: "{{ route('doctors.byDepartment') }}",
                     type: 'GET',
                     data: { department_id: departmentId },
                     success: function(data) {
@@ -130,19 +128,17 @@ Booking Create - Admin Panel
                         });
                     }
                 });
-            } else {
-                $('#doctor_id').html('<option value="">Select Doctor</option>').prop('disabled', true);
             }
         });
 
-        // When a doctor is selected, load appointment schedules
         $('#doctor_id').change(function() {
             var doctorId = $(this).val();
             $('#appointment_schedule_id').prop('disabled', true).empty().append('<option value="">Select Appointment Schedule</option>');
+            $('#booking_date').prop('disabled', true);
 
             if (doctorId) {
                 $.ajax({
-                    url: "{{ route('appointmentSchedules.byDoctor') }}", // Adjust this route to match your setup
+                    url: "{{ route('appointmentSchedules.byDoctor') }}",
                     type: 'GET',
                     data: { doctor_id: doctorId },
                     success: function(data) {
@@ -150,12 +146,37 @@ Booking Create - Admin Panel
                         $.each(data, function(key, schedule) {
                             $('#appointment_schedule_id').append('<option value="'+ schedule.id +'">' + schedule.day_of_week + ' (' + schedule.start_time + ' - ' + schedule.end_time + ')</option>');
                         });
+
+                        setupFlatpickr(data);
                     }
                 });
-            } else {
-                $('#appointment_schedule_id').html('<option value="">Select Appointment Schedule</option>').prop('disabled', true);
             }
         });
+
+        function setupFlatpickr(schedules) {
+            var availableDays = schedules.map(function(schedule) {
+                return schedule.day_of_week.toLowerCase();
+            });
+
+            $('#booking_date').flatpickr({
+                dateFormat: 'Y-m-d',
+                minDate: 'today',
+                enable: [
+                    function(date) {
+                        var day = date.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
+                        return availableDays.includes(day);
+                    }
+                ],
+                onOpen: function(selectedDates, dateStr, instance) {
+                    if (availableDays.length === 0) {
+                        alert('Please select a doctor to see available dates.');
+                        instance.close();
+                    }
+                }
+            });
+
+            $('#booking_date').prop('disabled', false);
+        }
     });
 </script>
 @endsection

@@ -16,10 +16,10 @@ class AdminSeeder extends Seeder
         $admin = Admin::where('username', 'superadmin')->first();
 
         if (is_null($admin)) {
-            $admin           = new Admin();
-            $admin->name     = "Super Admin";
-            $admin->email    = "superadmin@example.com";
-            $admin->username = "superadmin";
+            $admin = new Admin();
+            $admin->name = 'Super Admin';
+            $admin->email = 'superadmin@example.com';
+            $admin->username = 'superadmin';
             $admin->password = Hash::make('12345678');
             $admin->save();
         }

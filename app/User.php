@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +9,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles;
+    use HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -45,6 +44,7 @@ class User extends Authenticatable
             ->select('group_name as name')
             ->groupBy('group_name')
             ->get();
+
         return $permission_groups;
     }
 
@@ -54,6 +54,7 @@ class User extends Authenticatable
             ->select('name', 'id')
             ->where('group_name', $group_name)
             ->get();
+
         return $permissions;
     }
 
@@ -61,11 +62,13 @@ class User extends Authenticatable
     {
         $hasPermission = true;
         foreach ($permissions as $permission) {
-            if (!$role->hasPermissionTo($permission->name)) {
+            if (! $role->hasPermissionTo($permission->name)) {
                 $hasPermission = false;
+
                 return $hasPermission;
             }
         }
+
         return $hasPermission;
     }
 }

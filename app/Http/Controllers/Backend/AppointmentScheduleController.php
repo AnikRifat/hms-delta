@@ -10,19 +10,19 @@ use Illuminate\Http\Request;
 class AppointmentScheduleController extends Controller
 {
     public function getByDoctor(Request $request)
-{
-    $doctorId = $request->get('doctor_id');
-    $schedules = AppointmentSchedule::where('doctor_id', $doctorId)->get();
-    return response()->json($schedules);
-}
+    {
+        $doctorId = $request->get('doctor_id');
+        $schedules = AppointmentSchedule::where('doctor_id', $doctorId)->get();
 
-public function getDoctors(Request $request)
-{
-    $departmentId = $request->get('department_id');
+        return response()->json($schedules);
+    }
 
-    $doctors = Doctor::with('appointmentSchedules')->where('department_id', $departmentId)->get();
-    return response()->json($doctors);
-}
+    public function getDoctors(Request $request)
+    {
+        $departmentId = $request->get('department_id');
 
+        $doctors = Doctor::whereHas('appointmentSchedules')->where('department_id', $departmentId)->get();
 
+        return response()->json($doctors);
+    }
 }

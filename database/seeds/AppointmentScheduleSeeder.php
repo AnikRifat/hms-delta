@@ -1,11 +1,12 @@
 <?php
+
 // database/seeders/AppointmentScheduleSeeder.php
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\AppointmentSchedule;
 use App\Models\Doctor;
+use Illuminate\Database\Seeder;
 
 class AppointmentScheduleSeeder extends Seeder
 {

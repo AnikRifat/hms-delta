@@ -1,4 +1,5 @@
 <?php
+
 // app/Models/Doctor.php
 
 namespace App\Models;

@@ -37,8 +37,8 @@ class BookingController extends Controller
 
         return view('backend.pages.bookings.create', [
             'appointmentSchedules' => AppointmentSchedule::with('doctor')->get(),
-            'doctors' => Doctor::with('appointmentSchedules')->get(),
-            'departments' => Department::with('doctors')->get(),
+            'doctors' => Doctor::whereHas('appointmentSchedules')->get(),
+            'departments' => Department::whereHas('doctors.appointmentSchedules')->with('doctors')->get(),
         ]);
     }
 
@@ -52,6 +52,7 @@ class BookingController extends Controller
         Booking::create($request->validated());
 
         session()->flash('success', __('Booking has been created.'));
+
         return redirect()->route('admin.bookings.index');
     }
 
@@ -67,8 +68,8 @@ class BookingController extends Controller
         return view('backend.pages.bookings.edit', [
             'booking' => $booking,
             'appointmentSchedules' => AppointmentSchedule::with('doctor')->get(),
-            'doctors' => Doctor::with('appointmentSchedules')->get(),
-            'departments' => Department::with('doctors')->get(),
+            'doctors' => Doctor::whereHas('appointmentSchedules')->get(),
+            'departments' => Department::whereHas('doctors.appointmentSchedules')->with('doctors')->get(),
 
         ]);
     }
@@ -84,6 +85,7 @@ class BookingController extends Controller
         $booking->update($request->validated());
 
         session()->flash('success', __('Booking has been updated.'));
+
         return redirect()->route('admin.bookings.index');
     }
 
@@ -98,6 +100,7 @@ class BookingController extends Controller
         $booking->delete();
 
         session()->flash('success', __('Booking has been deleted.'));
+
         return back();
     }
 }

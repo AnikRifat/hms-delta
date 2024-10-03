@@ -35,6 +35,7 @@ class DepartmentController extends Controller
         Department::create($request->validated());
 
         session()->flash('success', __('Department has been created.'));
+
         return redirect()->route('admin.departments.index');
     }
 
@@ -43,6 +44,7 @@ class DepartmentController extends Controller
         $this->checkAuthorization(auth()->user(), ['department.edit']);
 
         $department = Department::findOrFail($id);
+
         return view('backend.pages.departments.edit', [
             'department' => $department,
         ]);
@@ -56,6 +58,7 @@ class DepartmentController extends Controller
         $department->update($request->validated());
 
         session()->flash('success', __('Department has been updated.'));
+
         return redirect()->route('admin.departments.index');
     }
 
@@ -67,7 +70,7 @@ class DepartmentController extends Controller
         $department->delete();
 
         session()->flash('success', __('Department has been deleted.'));
+
         return back();
     }
-
 }

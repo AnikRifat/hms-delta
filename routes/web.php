@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\Backend\AdminsController;
 use App\Http\Controllers\Backend\AppointmentScheduleController;
 use App\Http\Controllers\Backend\Auth\ForgotPasswordController;
@@ -13,6 +10,8 @@ use App\Http\Controllers\Backend\DepartmentController;
 use App\Http\Controllers\Backend\DoctorController;
 use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,15 +36,12 @@ Route::get('/', 'HomeController@index')->name('home');
 /**
  * Admin routes
  */
+route::get('appointment-schedules/by-doctor', [AppointmentScheduleController::class, 'getByDoctor'])->name('appointmentSchedules.byDoctor');
 
- route::get('appointment-schedules/by-doctor', [AppointmentScheduleController::class, 'getByDoctor'])->name('appointmentSchedules.byDoctor');
-
- route::get('doctors/by-department', [AppointmentScheduleController::class, 'getDoctors'])->name('doctors.byDepartment');
- Route::post('/store/bookings',[ HomeController::class,'storeBooking'])->name('bookings.store');
+route::get('doctors/by-department', [AppointmentScheduleController::class, 'getDoctors'])->name('doctors.byDepartment');
+Route::post('/store/bookings', [HomeController::class, 'storeBooking'])->name('bookings.store');
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-
-
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('roles', RolesController::class);

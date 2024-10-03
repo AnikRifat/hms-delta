@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +9,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
 {
-    use Notifiable, HasRoles;
+    use HasRoles, Notifiable;
 
     /**
      * Set the default guard for this model.
@@ -52,6 +51,7 @@ class Admin extends Authenticatable
             ->select('group_name as name')
             ->groupBy('group_name')
             ->get();
+
         return $permission_groups;
     }
 
@@ -61,6 +61,7 @@ class Admin extends Authenticatable
             ->select('name', 'id')
             ->where('group_name', $group_name)
             ->get();
+
         return $permissions;
     }
 
@@ -68,11 +69,13 @@ class Admin extends Authenticatable
     {
         $hasPermission = true;
         foreach ($permissions as $permission) {
-            if (!$role->hasPermissionTo($permission->name)) {
+            if (! $role->hasPermissionTo($permission->name)) {
                 $hasPermission = false;
+
                 return $hasPermission;
             }
         }
+
         return $hasPermission;
     }
 }

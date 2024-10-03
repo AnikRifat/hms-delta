@@ -1,4 +1,5 @@
 <?php
+
 // app/Http/Requests/DepartmentRequest.php
 
 namespace App\Http\Requests;
@@ -10,7 +11,7 @@ class DepartmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:departments,name' . ($this->department ? ",{$this->department}" : ''),
+            'name' => 'required|string|max:255|unique:departments,name'.($this->department ? ",{$this->department}" : ''),
         ];
     }
 

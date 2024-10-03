@@ -1,10 +1,11 @@
 <?php
+
 // database/seeders/PatientSeeder.php
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Patient;
+use Illuminate\Database\Seeder;
 
 class PatientSeeder extends Seeder
 {

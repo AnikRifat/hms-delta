@@ -6,6 +6,7 @@
     <title>Book an Appointment</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
     <style>
         body {
             background: #f8f9fa;
@@ -14,12 +15,29 @@
         .appointment-form {
             background: #fff;
             padding: 30px;
-            border-radius: 8px;
+            border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
         .form-title {
             text-align: center;
             margin-bottom: 20px;
+        }
+        .select2-container--default .select2-selection--single {
+            height: 45px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ced4da;
+        }
+        .form-control, .select2-selection--single {
+            border-radius: 10px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 10px;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -73,7 +91,7 @@
 
                     <div class="mb-3">
                         <label for="booking_date" class="form-label">Booking Date</label>
-                        <input type="date" class="form-control" id="booking_date" name="booking_date" required>
+                        <input type="text" class="form-control" id="booking_date" name="booking_date" placeholder="Select Booking Date" required disabled>
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100">Book Appointment</button>
@@ -86,9 +104,9 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     $(document).ready(function() {
-        $('.select2').select2();
 
         // When a department is selected, load doctors
         $('#department_id').change(function() {
@@ -98,7 +116,7 @@
 
             if (departmentId) {
                 $.ajax({
-                    url: "{{ route('doctors.byDepartment') }}", // Adjust this route to match your setup
+                    url: "{{ route('doctors.byDepartment') }}",
                     type: 'GET',
                     data: { department_id: departmentId },
                     success: function(data) {
@@ -108,8 +126,6 @@
                         });
                     }
                 });
-            } else {
-                $('#doctor_id').html('<option value="">Select Doctor</option>').prop('disabled', true);
             }
         });
 
@@ -120,7 +136,7 @@
 
             if (doctorId) {
                 $.ajax({
-                    url: "{{ route('appointmentSchedules.byDoctor') }}", // Replace with your route
+                    url: "{{ route('appointmentSchedules.byDoctor') }}",
                     type: 'GET',
                     data: { doctor_id: doctorId },
                     success: function(data) {
@@ -128,12 +144,37 @@
                         $.each(data, function(key, value) {
                             $('#appointment_schedule_id').append('<option value="'+ value.id +'">' + value.day_of_week + ' (' + value.start_time + ' - ' + value.end_time + ')</option>');
                         });
+
+                        setupFlatpickr(data);
                     }
                 });
-            } else {
-                $('#appointment_schedule_id').html('<option value="">Select Appointment Schedule</option>').prop('disabled', true);
             }
         });
+
+        function setupFlatpickr(schedules) {
+            var availableDays = schedules.map(function(schedule) {
+                return schedule.day_of_week.toLowerCase();
+            });
+
+            $('#booking_date').flatpickr({
+                dateFormat: 'Y-m-d',
+                minDate: 'today',
+                enable: [
+                    function(date) {
+                        var day = date.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
+                        return availableDays.includes(day);
+                    }
+                ],
+                onOpen: function(selectedDates, dateStr, instance) {
+                    if (availableDays.length === 0) {
+                        alert('Please select a doctor to see available dates.');
+                        instance.close();
+                    }
+                }
+            });
+
+            $('#booking_date').prop('disabled', false);
+        }
     });
 </script>
 </body>

@@ -1,11 +1,12 @@
 <?php
+
 // database/seeders/DoctorSeeder.php
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Doctor;
 use App\Models\Department;
+use App\Models\Doctor;
+use Illuminate\Database\Seeder;
 
 class DoctorSeeder extends Seeder
 {

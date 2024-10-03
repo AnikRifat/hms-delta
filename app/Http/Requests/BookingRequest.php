@@ -23,9 +23,23 @@ class BookingRequest extends FormRequest
         return [
             'patient_name' => 'required|string|max:255',
             'patient_email' => 'nullable|email|max:255',
-            'patient_phone' => 'nullable|string|max:20',
+            'patient_phone' => [
+                'string',
+                'max:20',
+                'regex:/^(\+8801[3-9]\d{8}|01[3-9]\d{8})$/', // Validates Bangladeshi phone numbers
+            ],
             'appointment_schedule_id' => 'required|exists:appointment_schedules,id',
             'booking_date' => 'required|date',
+        ];
+    }
+
+    /**
+     * Get the validation error messages.
+     */
+    public function messages()
+    {
+        return [
+            'patient_phone.regex' => 'The patient phone number must be a valid Bangladeshi phone number.',
         ];
     }
 }

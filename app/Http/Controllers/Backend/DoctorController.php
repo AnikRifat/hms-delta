@@ -6,10 +6,10 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DoctorRequest; // Make sure to create this request
-use App\Http\Requests\AppointmentScheduleRequest; // Make sure to create this request
-use App\Models\Doctor;
+// Make sure to create this request
+use App\Models\AppointmentSchedule;
 use App\Models\Department;
-use App\Models\AppointmentSchedule; // Include the AppointmentSchedule model
+use App\Models\Doctor; // Include the AppointmentSchedule model
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 
@@ -58,6 +58,7 @@ class DoctorController extends Controller
         }
 
         session()->flash('success', __('Doctor has been created.'));
+
         return redirect()->route('admin.doctors.index');
     }
 
@@ -99,9 +100,9 @@ class DoctorController extends Controller
         $doctor->appointmentSchedules()->createMany($schedulesData);
 
         session()->flash('success', __('Doctor has been updated.'));
+
         return redirect()->route('admin.doctors.index');
     }
-
 
     public function destroy(int $id): RedirectResponse
     {
@@ -111,6 +112,7 @@ class DoctorController extends Controller
         $doctor->delete();
 
         session()->flash('success', __('Doctor has been deleted.'));
+
         return back();
     }
 }

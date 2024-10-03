@@ -1,10 +1,11 @@
 <?php
+
 // database/seeders/DepartmentSeeder.php
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Department;
+use Illuminate\Database\Seeder;
 
 class DepartmentSeeder extends Seeder
 {

@@ -40,11 +40,9 @@ class LoginController extends Controller
         return view('backend.auth.login');
     }
 
-
     /**
      * login admin
      *
-     * @param Request $request
      * @return void
      */
     public function login(Request $request)
@@ -59,15 +57,18 @@ class LoginController extends Controller
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
             // Redirect to dashboard
             session()->flash('success', 'Successully Logged in !');
+
             return redirect()->route('admin.dashboard');
         } else {
             // Search using username
             if (Auth::guard('admin')->attempt(['username' => $request->email, 'password' => $request->password], $request->remember)) {
                 session()->flash('success', 'Successully Logged in !');
+
                 return redirect()->route('admin.dashboard');
             }
             // error
             session()->flash('error', 'Invalid email and password');
+
             return back();
         }
     }
@@ -80,6 +81,7 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::guard('admin')->logout();
+
         return redirect()->route('admin.login');
     }
 }

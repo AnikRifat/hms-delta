@@ -1,12 +1,12 @@
 <?php
+
 // database/seeders/BookingSeeder.php
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Booking;
 use App\Models\AppointmentSchedule;
-use App\Models\Patient;
+use App\Models\Booking;
+use Illuminate\Database\Seeder;
 
 class BookingSeeder extends Seeder
 {

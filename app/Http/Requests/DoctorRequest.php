@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -9,7 +10,7 @@ class DoctorRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:doctors,email,' . $this->doctor,
+            'email' => 'required|email|unique:doctors,email,'.$this->doctor,
             'phone' => 'nullable|string|max:15',
             'specialization' => 'nullable|string|max:255',
             'department_id' => 'required|exists:departments,id',
