@@ -168,29 +168,35 @@ Booking Edit - Admin Panel
 
         // Setup Flatpickr for booking date
         function setupFlatpickr(schedules) {
-            var availableDays = schedules.map(function(schedule) {
-                return schedule.day_of_week.toLowerCase();
-            });
+    var availableDays = schedules.map(function(schedule) {
+        return schedule.day_of_week.toLowerCase();
+    });
 
-            $('#booking_date').flatpickr({
-                dateFormat: 'Y-m-d',
-                minDate: 'today',
-                enable: [
-                    function(date) {
-                        var day = date.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
-                        return availableDays.includes(day);
-                    }
-                ],
-                onOpen: function(selectedDates, dateStr, instance) {
-                    if (availableDays.length === 0) {
-                        alert('Please select a doctor to see available dates.');
-                        instance.close();
-                    }
-                }
-            });
+    var today = new Date();
+    var sevenDaysLater = new Date();
+    sevenDaysLater.setDate(today.getDate() + 7); // Limit to next 7 days
 
-            $('#booking_date').prop('disabled', false);
+    $('#booking_date').flatpickr({
+        dateFormat: 'Y-m-d',
+        minDate: 'today',
+        maxDate: sevenDaysLater,  // Limit to next 7 days
+        enable: [
+            function(date) {
+                var day = date.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
+                return availableDays.includes(day); // Enable only available days
+            }
+        ],
+        onOpen: function(selectedDates, dateStr, instance) {
+            if (availableDays.length === 0) {
+                alert('Please select a doctor to see available dates.');
+                instance.close();
+            }
         }
+    });
+
+    $('#booking_date').prop('disabled', false);
+}
+
 
         // Trigger change event to populate data on page load
         $('#department_id').trigger('change');
