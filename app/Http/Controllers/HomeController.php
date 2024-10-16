@@ -63,7 +63,7 @@ class HomeController extends Controller
 
         // Compose the message body
         $messageBody = $this->composeMessage($patientName, $doctorName, $departmentName, $appointmentDate, $scheduleTime);
-
+        $this->sendSMS($patientPhone, $messageBody);
 
 
         return view('success', compact('doctorName', 'bookingDate', 'scheduleTime'));
