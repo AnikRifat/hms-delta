@@ -147,7 +147,7 @@ class BookingController extends Controller
         $message .= "Thank you for choosing our healthcare services!\n";
         $message .= "We look forward to serving you.\n\n";
         $message .= "Best regards,\n";
-        $message .= "[Your Clinic Name]";
+        $message .= env('WEB_NAME');
 
         return $message;
     }

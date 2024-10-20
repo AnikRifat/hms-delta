@@ -39,7 +39,7 @@ class SmsService
             "sid" => $this->sid,
             "msisdn" => $msisdn,
             "sms" => $messageBody,
-            "csms_id" => str()->uuid()
+            "csms_id" => uniqid()
         ];
 
         $url = $this->domain . "/api/v3/send-sms";
