@@ -85,9 +85,9 @@ Bookings - Admin Panel
                         <table id="dataTable" class="text-center">
                             <thead class="bg-light text-capitalize">
                                 <tr>
-                                    <th width="5%">Sl</th>
+                                    <th width="5%">index</th>
+                                    <th width="15%">Serial Number</th>
                                     <th width="15%">Patient Name</th>
-                                    <th width="15%">Patient Email</th>
                                     <th width="15%">Patient Phone</th>
                                     <th width="20%">Doctor Name</th> <!-- Added Doctor Name -->
                                     <th width="20%">Appointment Schedule</th>
@@ -99,8 +99,8 @@ Bookings - Admin Panel
                                @foreach ($bookings as $booking)
                                <tr data-doctor-id="{{ $booking->appointmentSchedule->doctor->id }}" data-booking-date="{{ $booking->booking_date }}">
                                     <td>{{ $loop->index + 1 }}</td>
+                                    <td>{{ $booking->sl_no }}</td>
                                     <td>{{ $booking->patient_name }}</td>
-                                    <td>{{ $booking->patient_email }}</td>
                                     <td>{{ $booking->patient_phone }}</td>
                                     <td>{{ $booking->appointmentSchedule->doctor->name }}</td> <!-- Displaying Doctor Name -->
                                     <td>{{ $booking->appointmentSchedule->day_of_week }} {{ $booking->appointmentSchedule->start_time }} - {{ $booking->appointmentSchedule->end_time }}</td>

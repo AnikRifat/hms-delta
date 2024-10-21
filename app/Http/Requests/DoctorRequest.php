@@ -14,6 +14,7 @@ class DoctorRequest extends FormRequest
             'phone' => 'nullable|string|max:15',
             'specialization' => 'nullable|string|max:255',
             'department_id' => 'required|exists:departments,id',
+            'room_no' => 'required|numeric',
             'day_of_week' => 'required|array',
             'day_of_week.*' => 'required|string|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
             'start_time' => 'required|array',

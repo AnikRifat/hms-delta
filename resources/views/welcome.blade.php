@@ -57,12 +57,6 @@
                             <label for="patient_name" class="form-label">Patient Name</label>
                             <input type="text" class="form-control" id="patient_name" name="patient_name" placeholder="Enter your name" required>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="patient_email" class="form-label">Email Address</label>
-                            <input type="email" class="form-control" id="patient_email" name="patient_email" placeholder="Enter your email">
-                        </div>
-
                         <div class="mb-3">
                             <label for="patient_phone" class="form-label">Phone Number</label>
                             <input type="text" class="form-control" id="patient_phone" name="patient_phone" placeholder="Enter your phone number">

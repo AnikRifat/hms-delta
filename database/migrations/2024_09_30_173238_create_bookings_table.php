@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->string('patient_name');
+            $table->string('sl_no');
             $table->string('patient_email')->nullable();
             $table->string('patient_phone')->nullable();
             $table->foreignId('appointment_schedule_id')->references('id')->on('appointment_schedules')->onDelete('cascade');

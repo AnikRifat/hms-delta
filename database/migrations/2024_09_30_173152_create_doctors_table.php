@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone')->nullable();
             $table->string('specialization')->nullable();
+            $table->string('room_no')->nullable();
             $table->foreignId('department_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

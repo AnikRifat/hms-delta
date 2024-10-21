@@ -50,6 +50,7 @@ Doctors - Admin Panel
                             <thead class="bg-light text-capitalize">
                                 <tr>
                                     <th width="5%">Sl</th>
+                                    <th width="25%">Room No</th>
                                     <th width="25%">Name</th>
                                     <th width="25%">Email</th>
                                     <th width="15%">Phone</th>
@@ -61,6 +62,7 @@ Doctors - Admin Panel
                                @foreach ($doctors as $doctor)
                                <tr>
                                     <td>{{ $loop->index + 1 }}</td>
+                                    <td>{{ $doctor->room_no }}</td>
                                     <td>{{ $doctor->name }}</td>
                                     <td>{{ $doctor->email }}</td>
                                     <td>{{ $doctor->phone }}</td>

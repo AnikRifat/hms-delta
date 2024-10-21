@@ -11,7 +11,7 @@ class Doctor extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'phone', 'specialization', 'department_id'];
+    protected $fillable = ['name', 'email', 'phone', 'specialization', 'department_id','room_no'];
 
     public function department()
     {

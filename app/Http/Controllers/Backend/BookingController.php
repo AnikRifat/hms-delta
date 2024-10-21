@@ -68,7 +68,7 @@ class BookingController extends Controller
         try {
             // Attempt to send the SMS
             if ($patientPhone) {
-                $this->sendSMS($patientPhone, $messageBody);
+                // $this->sendSMS($patientPhone, $messageBody);
             }
         } catch (\Exception $e) {
             // Catch the error and dump the message for debugging

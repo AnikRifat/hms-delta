@@ -76,6 +76,10 @@ Edit Doctor - Admin Panel
 
                         <div class="form-row">
                             <div class="form-group col-md-6 col-sm-12">
+                                <label for="room_no">room no</label>
+                                <input type="text" class="form-control" id="room_no" name="room_no" value="{{ $doctor->room_no }}">
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12">
                                 <label for="department_id">Select Department</label>
                                 <select name="department_id" id="department_id" class="form-control select2" required>
                                     <option value="">Select Department</option>
