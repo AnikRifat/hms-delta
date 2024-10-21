@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Log;
 class BookingController extends Controller
 {
     /**
-    * Display a listing of bookings.
-    */
+     * Display a listing of bookings.
+     */
     public function index(): Renderable
     {
         $this->checkAuthorization(auth()->user(), ['booking.view']);
@@ -31,8 +31,8 @@ class BookingController extends Controller
     }
 
     /**
-    * Show the form for creating a new booking.
-    */
+     * Show the form for creating a new booking.
+     */
     public function create(): Renderable
     {
         $this->checkAuthorization(auth()->user(), ['booking.create']);
@@ -45,8 +45,8 @@ class BookingController extends Controller
     }
 
     /**
-    * Store a newly created booking in storage.
-    */
+     * Store a newly created booking in storage.
+     */
     public function store(BookingRequest $request): RedirectResponse
     {
         $this->checkAuthorization(auth()->user(), ['booking.create']);
@@ -59,7 +59,7 @@ class BookingController extends Controller
         $doctorName = $booking->appointmentSchedule->doctor->name;
         $departmentName = $booking->appointmentSchedule->doctor->department->name;
         $appointmentDate = $booking->booking_date;
-        $scheduleTime = $booking->appointmentSchedule->start_time . ' - ' . $booking->appointmentSchedule->end_time;
+        $scheduleTime = $booking->appointmentSchedule->start_time.' - '.$booking->appointmentSchedule->end_time;
         $patientPhone = $request->input('patient_phone');
         $sl_no = $booking->sl_no;
         $room_no = $booking->appointmentSchedule->doctor->room_no;
@@ -67,30 +67,27 @@ class BookingController extends Controller
         try {
             // Attempt to send the SMS
             if ($patientPhone) {
-                $smsService = new SmsService ;
-                $messageBody = $smsService->composeMessage($patientName, $doctorName, $departmentName, $appointmentDate, $scheduleTime,$sl_no,$room_no);
+                $smsService = new SmsService;
+                $messageBody = $smsService->composeMessage($patientName, $doctorName, $departmentName, $appointmentDate, $scheduleTime, $sl_no, $room_no);
                 $smsService->sendSingleSms($patientPhone, $messageBody);
             }
         } catch (\Exception $e) {
             // Catch the error and dump the message for debugging
-            Log::error('Error sending SMS: ' . $e->getMessage());
-            dd('Error sending SMS: ' . $e->getMessage());
+            Log::error('Error sending SMS: '.$e->getMessage());
+            dd('Error sending SMS: '.$e->getMessage());
         }
         session()->flash('success', __('Booking has been created and confirmation SMS sent.'));
 
         return redirect()->route('admin.bookings.index');
     }
 
-
     /**
-    * Show the form for editing the specified booking.
-    */
+     * Show the form for editing the specified booking.
+     */
     public function edit(int $id): Renderable
     {
         $this->checkAuthorization(auth()->user(), ['booking.edit']);
-
         $booking = Booking::findOrFail($id);
-
         return view('backend.pages.bookings.edit', [
             'booking' => $booking,
             'appointmentSchedules' => AppointmentSchedule::with('doctor')->get(),
@@ -101,14 +98,18 @@ class BookingController extends Controller
     }
 
     /**
-    * Update the specified booking in storage.
-    */
+     * Update the specified booking in storage.
+     */
     public function update(BookingRequest $request, int $id): RedirectResponse
     {
         $this->checkAuthorization(auth()->user(), ['booking.edit']);
 
         $booking = Booking::findOrFail($id);
-        $booking->update($request->validated());
+        $data =$request->validated();
+        if(isset($request->sl_no)){
+            $data['sl_no'] = $request->sl_no;
+        }
+        $booking->update($data);
 
         session()->flash('success', __('Booking has been updated.'));
 
@@ -116,8 +117,8 @@ class BookingController extends Controller
     }
 
     /**
-    * Remove the specified booking from storage.
-    */
+     * Remove the specified booking from storage.
+     */
     public function destroy(int $id): RedirectResponse
     {
         $this->checkAuthorization(auth()->user(), ['booking.delete']);
@@ -129,6 +130,4 @@ class BookingController extends Controller
 
         return back();
     }
-
-
 }

@@ -7,16 +7,18 @@ use Exception;
 class SmsService
 {
     protected $api_token;
+
     protected $sid;
+
     protected $domain;
 
     /**
-    * Create a new class instance.
-    *
-    * @param string $api_token
-    * @param string $sid
-    * @param string $domain
-    */
+     * Create a new class instance.
+     *
+     * @param  string  $api_token
+     * @param  string  $sid
+     * @param  string  $domain
+     */
     public function __construct()
     {
         $this->api_token = '6mpxigx9-r9qtczun-dhepssss-gdpbdn02-miqbe0wz';
@@ -25,45 +27,46 @@ class SmsService
     }
 
     /**
-    * Send a single SMS
-    *
-    * @param string $msisdn The recipient's phone number
-    * @param string $messageBody The body of the SMS message
-    * @param string $csmsId Unique CSMS ID (must be unique per day)
-    * @return string The response from the API
-    */
+     * Send a single SMS
+     *
+     * @param  string  $msisdn  The recipient's phone number
+     * @param  string  $messageBody  The body of the SMS message
+     * @param  string  $csmsId  Unique CSMS ID (must be unique per day)
+     * @return string The response from the API
+     */
     public function sendSingleSms($msisdn, $messageBody)
     {
         $params = [
-            "api_token" => $this->api_token,
-            "sid" => $this->sid,
-            "msisdn" => $msisdn,
-            "sms" => $messageBody,
-            "csms_id" => uniqid()
+            'api_token' => $this->api_token,
+            'sid' => $this->sid,
+            'msisdn' => $msisdn,
+            'sms' => $messageBody,
+            'csms_id' => uniqid(),
         ];
 
-        $url = $this->domain . "/api/v3/send-sms";
+        $url = $this->domain.'/api/v3/send-sms';
         $params = json_encode($params);
 
         try {
-            $response = json_decode($this->callApi($url, $params),true);
-            if($response['status'] === 'FAILED'){
+            $response = json_decode($this->callApi($url, $params), true);
+            if ($response['status'] === 'FAILED') {
                 dd($response['error_message']);
             }
         } catch (Exception $e) {
             // Handle the exception or log the error
-            dd('SMS sending failed: ' . $e->getMessage());
+            dd('SMS sending failed: '.$e->getMessage());
         }
     }
 
     /**
-    * Make a cURL call to the API
-    *
-    * @param string $url The API URL
-    * @param string $params The JSON encoded request body
-    * @return string The response from the cURL request
-    * @throws Exception If cURL request fails
-    */
+     * Make a cURL call to the API
+     *
+     * @param  string  $url  The API URL
+     * @param  string  $params  The JSON encoded request body
+     * @return string The response from the cURL request
+     *
+     * @throws Exception If cURL request fails
+     */
     protected function callApi($url, $params)
     {
         $ch = curl_init();
@@ -72,12 +75,12 @@ class SmsService
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Disable SSL verification for local testing, should be true in production
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
-            'Content-Length: ' . strlen($params),
-            'accept:application/json'
+            'Content-Length: '.strlen($params),
+            'accept:application/json',
         ]);
 
         $response = curl_exec($ch);
@@ -91,7 +94,9 @@ class SmsService
 
         return $response;
     }
-    public function composeMessage($patientName, $doctorName, $departmentName, $appointmentDate, $scheduleTime,$sl_no,$room_no) {
+
+    public function composeMessage($patientName, $doctorName, $departmentName, $appointmentDate, $scheduleTime, $sl_no, $room_no)
+    {
         $message = "Dear $patientName,\n\n";
         $message .= "Your appointment has been successfully booked!\n";
         $message .= "Here are your appointment details:\n\n";

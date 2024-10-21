@@ -1,5 +1,4 @@
 @extends('backend.layouts.master')
-
 @section('title')
 Booking Edit - Admin Panel
 @endsection
@@ -46,6 +45,10 @@ Booking Edit - Admin Panel
                         @method('PUT')
                         <div class="form-row">
                             <div class="form-group col-md-6 col-sm-12 mb-3">
+                                <label for="sl_no" class="form-label">Serial No.</label>
+                                <input type="text" class="form-control" id="sl_no" name="sl_no" value="{{ $booking->sl_no }}" placeholder="Enter Patient Name" required>
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12 mb-3">
                                 <label for="patient_name" class="form-label">Patient Name</label>
                                 <input type="text" class="form-control" id="patient_name" name="patient_name" value="{{ $booking->patient_name }}" placeholder="Enter Patient Name" required>
                             </div>
@@ -64,7 +67,9 @@ Booking Edit - Admin Panel
                                 <label for="department_id" class="form-label">Select Department</label>
                                 <select class="form-control select2" id="department_id" name="department_id" required>
                                     <option value="">Select Department</option>
+
                                     @foreach ($departments as $department)
+
                                         <option value="{{ $department->id }}" {{ $department->id == $booking->appointmentSchedule->doctor->department_id ? 'selected' : '' }}>{{ $department->name }}</option>
                                     @endforeach
                                 </select>
@@ -75,7 +80,7 @@ Booking Edit - Admin Panel
                                 <select class="form-control select2" id="doctor_id" name="doctor_id" required disabled>
                                     <option value="">Select Doctor</option>
                                     @foreach ($doctors as $doctor)
-                                        <option value="{{ $doctor->id }}" {{ $doctor->id == $booking->doctor_id ? 'selected' : '' }}>{{ $doctor->name }}</option>
+                                        <option value="{{ $doctor->id }}" {{ $doctor->id == $booking->appointmentSchedule->doctor->id ? 'selected' : '' }}>{{ $doctor->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

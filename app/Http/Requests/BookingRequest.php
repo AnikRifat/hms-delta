@@ -21,7 +21,6 @@ class BookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sl_no' => 'required|numeric',
             'patient_name' => 'required|string|max:255',
             'patient_email' => 'nullable|email|max:255',
             'patient_phone' => [

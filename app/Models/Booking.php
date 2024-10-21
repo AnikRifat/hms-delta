@@ -11,12 +11,13 @@ class Booking extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['patient_name', 'patient_email', 'patient_phone', 'appointment_schedule_id', 'booking_date'];
+    protected $fillable = ['sl_no','patient_name', 'patient_email', 'patient_phone', 'appointment_schedule_id', 'booking_date'];
 
     public function appointmentSchedule()
     {
         return $this->belongsTo(AppointmentSchedule::class);
     }
+
     protected static function boot()
     {
         parent::boot();
