@@ -1,4 +1,5 @@
 @extends('backend.layouts.master')
+
 @section('title')
 Booking Edit - Admin Panel
 @endsection
@@ -121,7 +122,7 @@ Booking Edit - Admin Panel
         // Initialize Select2
 
         // Load doctors based on selected department
-        $('#department_id').change(function() {
+        $('#department_id').click(function() {
             var departmentId = $(this).val();
             $('#doctor_id').prop('disabled', true).empty().append('<option value="">Select Doctor</option>');
             $('#appointment_schedule_id').prop('disabled', true).empty().append('<option value="">Select Appointment Schedule</option>');
