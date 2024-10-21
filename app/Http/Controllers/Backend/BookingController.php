@@ -61,14 +61,15 @@ class BookingController extends Controller
         $appointmentDate = $booking->booking_date;
         $scheduleTime = $booking->appointmentSchedule->start_time . ' - ' . $booking->appointmentSchedule->end_time;
         $patientPhone = $request->input('patient_phone');
-
-        // Compose the message body
-        $messageBody = $this->composeMessage($patientName, $doctorName, $departmentName, $appointmentDate, $scheduleTime);
+        $sl_no = $booking->sl_no;
+        $room_no = $booking->appointmentSchedule->doctor->room_no;
 
         try {
             // Attempt to send the SMS
             if ($patientPhone) {
-                // $this->sendSMS($patientPhone, $messageBody);
+                $smsService = new SmsService ;
+                $messageBody = $smsService->composeMessage($patientName, $doctorName, $departmentName, $appointmentDate, $scheduleTime,$sl_no,$room_no);
+                $smsService->sendSingleSms($patientPhone, $messageBody);
             }
         } catch (\Exception $e) {
             // Catch the error and dump the message for debugging
@@ -77,7 +78,7 @@ class BookingController extends Controller
         }
         session()->flash('success', __('Booking has been created and confirmation SMS sent.'));
 
-             return redirect()->route('admin.bookings.index');
+        return redirect()->route('admin.bookings.index');
     }
 
 
@@ -130,25 +131,4 @@ class BookingController extends Controller
     }
 
 
-    private function sendSMS($phoneNumber, $messageBody) {
-        $smsService = new SmsService ;
-        $smsService->sendSingleSms($phoneNumber, $messageBody);
-    }
-    private function composeMessage($patientName, $doctorName, $departmentName, $appointmentDate, $scheduleTime) {
-        $message = "Dear $patientName,\n\n";
-        $message .= "Your appointment has been successfully booked!\n";
-        $message .= "Here are your appointment details:\n\n";
-        $message .= "Doctor: Dr. $doctorName\n";
-        $message .= "Department: $departmentName\n";
-        $message .= "Appointment Date: $appointmentDate\n";
-        $message .= "Time: $scheduleTime\n\n";
-        $message .= "Please arrive 10 minutes early and bring any necessary documents with you.\n";
-        $message .= "If you need to reschedule or have any questions, feel free to contact us.\n\n";
-        $message .= "Thank you for choosing our healthcare services!\n";
-        $message .= "We look forward to serving you.\n\n";
-        $message .= "Best regards,\n";
-        $message .= env('WEB_NAME');
-
-        return $message;
-    }
 }

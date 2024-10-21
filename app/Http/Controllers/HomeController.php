@@ -60,34 +60,18 @@ class HomeController extends Controller
         $appointmentDate = $booking->booking_date;
         $patientPhone = $booking->patient_phone;
         $patientName = $booking->patient_name;
-
+        $sl_no = $booking->sl_no;
+        $room_no = $booking->appointmentSchedule->doctor->room_no;
+        $smsService = new SmsService ;
         // Compose the message body
-        $messageBody = $this->composeMessage($patientName, $doctorName, $departmentName, $appointmentDate, $scheduleTime);
-        $this->sendSMS($patientPhone, $messageBody);
-
+        $messageBody = $smsService->composeMessage($patientName, $doctorName, $departmentName, $appointmentDate, $scheduleTime,$sl_no,$room_no);
+        $smsService->sendSingleSms($patientPhone, $messageBody);
 
         return view('success', compact('doctorName', 'bookingDate', 'scheduleTime'));
     }
 
     private function sendSMS($phoneNumber, $messageBody) {
-        $smsService = new SmsService ;
-        $smsService->sendSingleSms($phoneNumber, $messageBody);
-    }
-    private function composeMessage($patientName, $doctorName, $departmentName, $appointmentDate, $scheduleTime) {
-        $message = "Dear $patientName,\n\n";
-        $message .= "Your appointment has been successfully booked!\n";
-        $message .= "Here are your appointment details:\n\n";
-        $message .= "Doctor: Dr. $doctorName\n";
-        $message .= "Department: $departmentName\n";
-        $message .= "Appointment Date: $appointmentDate\n";
-        $message .= "Time: $scheduleTime\n\n";
-        $message .= "Please arrive 10 minutes early and bring any necessary documents with you.\n";
-        $message .= "If you need to reschedule or have any questions, feel free to contact us.\n\n";
-        $message .= "Thank you for choosing our healthcare services!\n";
-        $message .= "We look forward to serving you.\n\n";
-        $message .= "Best regards,\n";
-        $message .= env('WEB_NAME');
 
-        return $message;
     }
+
 }
